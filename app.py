@@ -30,31 +30,32 @@ if menu == "Analysis":
         sns.heatmap(data.corr(numeric_only=True), cmap=sns.cubehelix_palette(as_cmap=True))
         st.pyplot(fig)
 
-st.sidebar.header("Personal data")
-age = st.sidebar.slider("Age", 18, 100, 18)
-num_enfants = st.sidebar.number_input("Number of children", min_value=0, max_value=10, value=0)
 
-# Cases à cocher
-regions = st.sidebar.selectbox("Areas", ["northwest", "northeast", "southwest", "southeast"])
-genre = st.sidebar.selectbox("Gender", ["male", "female"])
-fumeur = st.sidebar.checkbox("Smoker")
-
-
-# Fumeurs
-    
-if fumeur == True:
-    smoker = "a smoker"
-else:
-    smoker = "not a smoker"
-
-# Champs à remplir
-st.sidebar.header("Calculate your BMI")
-poids = st.sidebar.slider("Weight (kg)", 0, 300)
-taille = st.sidebar.slider("Height (m)", 0.0, 3.0)
 
 # Calcul de l'IMC
 if menu == "Charges prediction":
     st.title("Assur'aimant insurance cost estimator")
+    st.sidebar.header("Personal data")
+    age = st.sidebar.slider("Age", 18, 100, 18)
+    num_enfants = st.sidebar.number_input("Number of children", min_value=0, max_value=10, value=0)
+
+    # Cases à cocher
+    regions = st.sidebar.selectbox("Areas", ["northwest", "northeast", "southwest", "southeast"])
+    genre = st.sidebar.selectbox("Gender", ["male", "female"])
+    fumeur = st.sidebar.checkbox("Smoker")
+
+
+    # Fumeurs
+        
+    if fumeur == True:
+        smoker = "a smoker"
+    else:
+        smoker = "not a smoker"
+
+    # Champs à remplir
+    st.sidebar.header("Calculate your BMI")
+    poids = st.sidebar.slider("Weight (kg)", 0, 300)
+    taille = st.sidebar.slider("Height (m)", 0.0, 3.0)
     if poids > 0 and taille > 0:
         imc = poids / (taille ** 2)
         st.sidebar.write(f"BMI result : {imc:.2f}")
