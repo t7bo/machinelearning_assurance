@@ -5,12 +5,13 @@ import numpy as np
 
 # Titre du formulaire
 st.title("Estimateur de frais d'assurance chez Assur'Aimant")# Pour ajouter de l'espace
-st.markdown("**Réalisé par Tibo et Mêlody**")
+st.markdown("**Réalisé par Tibo & Melo**")
 
 # Filtres horizontaux
 st.sidebar.header("Personal information")
 # age = st.sidebar.number_input("Âge", 18, 90, value=18)
 age = st.sidebar.slider("Age", 18, 100, 18)
+
 num_enfants = st.sidebar.number_input("Number of children", min_value=0, max_value=10, value=0)
 
 # Cases à cocher
@@ -36,7 +37,7 @@ if poids > 0 and taille > 0:
     st.header("Récapitulatif de vos informations")
     st.write(f"Vous êtes un(e) **{genre}**, vous avez **{age}** ans et **{num_enfants}** enfants. Vous venez de la région **{region}** et vous êtes **{smoker}**. Votre indice de masse corporelle est de **{imc:.2f}**")
     st.header("Estimation des charges que vous pourriez payer chez nous")
-    st.write(f"Avec les informations en notre possession, nous pouvons établir un **montant approximatif** de charges que vous auriez à payer chez nous. Ce montant s'éléverait à : ")
+    st.write(f"Avec les informations en notre possession, nous pouvons établir un **montant maximal approximatif** de charges que vous auriez à payer chez nous. Ce montant s'éléverait à : ")
     #st.markdown("<span style='color:green; font-size:54px;'>**4500 $**</span>", unsafe_allow_html=True)
 
     #dictionnaire = {"age" : age, "sex" : genre, "bmi" : imc, "children" : num_enfants, "smoker" : fumeur, "region" : region}
@@ -46,3 +47,4 @@ if poids > 0 and taille > 0:
         model = pickle.load(file)
         prediction = model.predict(df_a_predire)
         st.markdown(f"<span style='color:green; font-size:54px;'>**{round(prediction[0], 4)} $**</span>", unsafe_allow_html=True)
+
