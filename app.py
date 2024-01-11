@@ -25,6 +25,8 @@ if fumeur == True:
 else:
     smoker = "non-fumeur/fumeuse"
 
+
+
 # Champs à remplir
 st.sidebar.header("Calculate your BMI")
 poids = st.sidebar.slider("Weight (kg)", 0, 300)
@@ -39,6 +41,20 @@ if poids > 0 and taille > 0:
     st.header("Estimation des charges que vous pourriez payer chez nous")
     st.write(f"Avec les informations en notre possession, nous pouvons établir un **montant maximal approximatif** de charges que vous auriez à payer chez nous. Ce montant s'éléverait à : ")
     #st.markdown("<span style='color:green; font-size:54px;'>**4500 $**</span>", unsafe_allow_html=True)
+
+# if imc > 0 and imc < 18.5:
+#     imc_categ = "underweight"
+# elif imc > 18.5 and imc < 24.9:
+#     imc_categ = "normal"
+# elif imc > 24.9 and imc < 29.9:
+#     imc_categ = "overweight"
+# elif imc > 29.9 and imc < 34.9:
+#     imc_categ = "obesity class 1"
+# elif imc > 34.9 and imc < 39.9:
+#     imc_categ = "obesity class 2"
+# else:
+#     imc_categ = "obesity class 3"
+
 
     #dictionnaire = {"age" : age, "sex" : genre, "bmi" : imc, "children" : num_enfants, "smoker" : fumeur, "region" : region}
     dictionnaire = {"age" : [age], "sex" : [genre], "bmi" : [imc], "children" : [num_enfants], "smoker" : [fumeur], "region" : [region]}
