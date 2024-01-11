@@ -6,11 +6,8 @@ import seaborn as sns
 import matplotlib.pyplot as plt
 
 
-
 data=pd.read_csv("clean_data.csv")
 df = data.drop('bmi_categories',axis=1)
-
-
 
 
 menu= st.sidebar.radio("Menu", ["Charges estimator", "Analysis"])
@@ -68,6 +65,20 @@ if menu == "Charges estimator":
     # Calcul de l'IMC
     if poids > 0 and taille > 0:
         imc = poids / (taille ** 2)
+
+        if imc > 0 and imc < 18.5:
+            imc_categ = "underweight"
+        elif imc > 18.5 and imc < 24.9:
+            imc_categ = "normal"
+        elif imc > 24.9 and imc < 29.9:
+            imc_categ = "overweight"
+        elif imc > 29.9 and imc < 34.9:
+            imc_categ = "obesity class 1"
+        elif imc > 34.9 and imc < 39.9:
+            imc_categ = "obesity class 2"
+        else:
+            imc_categ = "obesity class 3"
+
         st.sidebar.write(f"Votre IMC est : {imc:.2f}")
         st.header("Récapitulatif de vos informations")
         st.write(f"Vous êtes un(e) **{genre}**, vous avez **{age}** ans et **{num_enfants}** enfants. Vous venez de la région **{region}** et vous êtes **{smoker}**. Votre indice de masse corporelle est de **{imc:.2f}**")
@@ -75,25 +86,11 @@ if menu == "Charges estimator":
         st.write(f"Avec les informations en notre possession, nous pouvons établir un **montant maximal approximatif** de charges que vous auriez à payer chez nous. Ce montant s'éléverait à : ")
         #st.markdown("<span style='color:green; font-size:54px;'>**4500 $**</span>", unsafe_allow_html=True)
 
-    # if imc > 0 and imc < 18.5:
-    #     imc_categ = "underweight"
-    # elif imc > 18.5 and imc < 24.9:
-    #     imc_categ = "normal"
-    # elif imc > 24.9 and imc < 29.9:
-    #     imc_categ = "overweight"
-    # elif imc > 29.9 and imc < 34.9:
-    #     imc_categ = "obesity class 1"
-    # elif imc > 34.9 and imc < 39.9:
-    #     imc_categ = "obesity class 2"
-    # else:
-    #     imc_categ = "obesity class 3"
-
 
         #dictionnaire = {"age" : age, "sex" : genre, "bmi" : imc, "children" : num_enfants, "smoker" : fumeur, "region" : region}
-        dictionnaire = {"age" : [age], "sex" : [genre], "bmi" : [imc], "children" : [num_enfants], "smoker" : [fumeur], "region" : [region]}
+        dictionnaire = {"age" : [age], "sex" : [genre], "bmi_categories" : [imc_categ], "children" : [num_enfants], "smoker" : [fumeur], "region" : [region]}
         df_a_predire = pd.DataFrame(dictionnaire)
         with open('modele.pkl', 'rb') as file:
             model = pickle.load(file)
             prediction = model.predict(df_a_predire)
             st.markdown(f"<span style='color:green; font-size:54px;'>**{round(prediction[0], 4)} $**</span>", unsafe_allow_html=True)
-
