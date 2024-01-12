@@ -4,6 +4,10 @@ import pandas as pd
 import numpy as np 
 import seaborn as sns
 import matplotlib.pyplot as plt
+from PIL import Image
+
+import base64
+import io
 
 
 data=pd.read_csv("clean_data.csv")
@@ -34,6 +38,28 @@ if menu == "Analysis":
 
 
 if menu == "Charges estimator":
+
+    # Charger une image
+    image = Image.open("logo_ml_blue-removebg-rogne.png")
+
+    # Convertir l'image en base64
+    buffered = io.BytesIO()
+    image.save(buffered, format="PNG")
+    img_str = base64.b64encode(buffered.getvalue()).decode()
+
+    # Utiliser du HTML personnalisé pour aligner horizontalement l'image et le texte
+    html_code = f"""
+        <div style="display: flex; flex-direction: row; align-items: center; justify-content: center">
+            <img src="data:image/png;base64,{img_str}" style="width: 200px; height: auto;">
+        </div>
+    """
+
+    # Afficher le HTML personnalisé
+    st.markdown(html_code, unsafe_allow_html=True)
+
+    # # Afficher le HTML personnalisé
+    # st.markdown(html_code, unsafe_allow_html=True)
+
 
     # Titre du formulaire
     st.title("Estimateur de frais d'assurance chez Assur'Aimant")# Pour ajouter de l'espace
