@@ -3,8 +3,10 @@ import streamlit as st
 import pandas as pd 
 import numpy as np
 import matplotlib.pyplot as plt 
-import seaborn as sns 
-
+import seaborn as sns
+from PIL import Image 
+import base64
+import io
 
 import streamlit as st
 data=pd.read_csv("clean_data.csv")
@@ -34,7 +36,25 @@ if menu == "Analysis":
 
 # Calcul de l'IMC
 if menu == "Charges prediction":
-    st.title("Assur'aimant insurance cost estimator")
+    image = Image.open("assuraimant.png")
+
+    # Convertir l'image en base64
+    buffered = io.BytesIO()
+    image.save(buffered, format="PNG")
+    img_str = base64.b64encode(buffered.getvalue()).decode()
+
+    # Utiliser du HTML personnalisé pour aligner horizontalement l'image et le texte
+    html_code = f"""
+        <div style="display: flex; flex-direction: row; align-items: center; justify-content: center">
+            <img src="data:image/png;base64,{img_str}" style="width: 200px; height: auto;">
+        </div>
+    """
+
+    # Afficher le HTML personnalisé
+    st.markdown(html_code, unsafe_allow_html=True)
+    # Utiliser la balise Markdown pour définir la taille du titre
+    st.markdown("<h1 style=' font-size: 40px;'>Assur'aimant Insurance Cost Estimator</h1>", unsafe_allow_html=True)
+
     st.sidebar.header("Personal data")
     age = st.sidebar.slider("Age", 18, 100, 18)
     num_enfants = st.sidebar.number_input("Number of children", min_value=0, max_value=10, value=0)
