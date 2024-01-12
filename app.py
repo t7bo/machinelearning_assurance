@@ -11,7 +11,7 @@ import io
 
 
 data=pd.read_csv("clean_data.csv")
-df = data.drop('bmi_categories',axis=1)
+df = data.drop('bmi_index',axis=1)
 
 
 menu= st.sidebar.radio("Menu", ["Charges estimator", "Analysis"])
