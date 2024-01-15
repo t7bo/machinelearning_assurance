@@ -88,7 +88,8 @@ if menu == "Charges prediction":
         #dictionnaire = {"age" : age, "sex" : genre, "bmi" : imc, "children" : num_enfants, "smoker" : fumeur, "region" : region}
         dictionnaire = {"age" : [age], "sex" : [genre], "bmi" : [imc], "children" : [num_enfants], "smoker" : [fumeur], "region" : [regions]}
         df_a_predire = pd.DataFrame(dictionnaire)
-        with open('modele.pkl', 'rb') as file:
+        # with open('modele.pkl', 'rb') as file:
+        with open('modele_lassomae.pkl', 'rb') as file:
             model = pickle.load(file)
             prediction = model.predict(df_a_predire)
             st.markdown(f"<span style='color:green; font-size:54px;'>**{round(prediction[0], 4)} $**</span>", unsafe_allow_html=True)
