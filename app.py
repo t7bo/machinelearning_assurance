@@ -7,6 +7,9 @@ import seaborn as sns
 from PIL import Image 
 import base64
 import io
+from machine_learning import LassoMAE
+
+
 
 import streamlit as st
 data=pd.read_csv("clean_data.csv")
