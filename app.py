@@ -7,13 +7,11 @@ import seaborn as sns
 from PIL import Image 
 import base64
 import io
-from machine_learning import LassoMAE
 
 
 
 import streamlit as st
 data=pd.read_csv("clean_data.csv")
-data = data.drop('bmi_categories',axis=1)
 
 
 # Filtres horizontaux
@@ -68,12 +66,7 @@ if menu == "Charges prediction":
     fumeur = st.sidebar.checkbox("Smoker")
 
 
-    # Fumeurs
-        
-    if fumeur == True:
-        smoker = "a smoker"
-    else:
-        smoker = "not a smoker"
+
 
     # Champs à remplir
     st.sidebar.header("Calculate your BMI")
@@ -81,6 +74,28 @@ if menu == "Charges prediction":
     taille = st.sidebar.slider("Height (m)", 0.0, 3.0)
     if poids > 0 and taille > 0:
         imc = poids / (taille ** 2)
+        if imc > 0 and imc < 18.5:
+            imc_categ = 0
+        elif imc > 18.5 and imc < 24.9:
+            imc_categ = 1
+        elif imc > 24.9 and imc < 29.9:
+            imc_categ = 2
+        elif imc > 29.9 and imc < 34.9:
+            imc_categ = 3
+        elif imc > 34.9 and imc < 39.9:
+            imc_categ = 4
+        elif imc > 39.9:
+            imc_categ = 5
+            
+            # Fumeurs
+        
+        if fumeur == True:
+            smoker = "a smoker"
+            smoker_bmi = imc
+        else:
+            smoker = "not a smoker"
+            smoker_bmi = 0
+            
         st.sidebar.write(f"BMI result : {imc:.2f}")
         st.header("Resume of your data")
         st.write(f"You are a **{genre}**, you are **{age}** years old and you have **{num_enfants}** child/children. You come from : **{regions}** and you are **{smoker}**. Your body mass index (BMI) is : **{imc:.2f}**")
@@ -89,10 +104,10 @@ if menu == "Charges prediction":
         #st.markdown("<span style='color:green; font-size:54px;'>**4500 $**</span>", unsafe_allow_html=True)
 
         #dictionnaire = {"age" : age, "sex" : genre, "bmi" : imc, "children" : num_enfants, "smoker" : fumeur, "region" : region}
-        dictionnaire = {"age" : [age], "sex" : [genre], "bmi" : [imc], "children" : [num_enfants], "smoker" : [fumeur], "region" : [regions]}
+        dictionnaire = {"age" : [age], "sex" : [genre], "bmi_categories" : [imc_categ], "children" : [num_enfants], "smoker" : [fumeur], "region" : [regions], "smoker_bmi" : [smoker_bmi]}
         df_a_predire = pd.DataFrame(dictionnaire)
         # with open('modele.pkl', 'rb') as file:
-        with open('modele_lassomae.pkl', 'rb') as file:
+        with open('modele.pkl', 'rb') as file:
             model = pickle.load(file)
             prediction = model.predict(df_a_predire)
             st.markdown(f"<span style='color:green; font-size:54px;'>**{round(prediction[0], 4)} $**</span>", unsafe_allow_html=True)
